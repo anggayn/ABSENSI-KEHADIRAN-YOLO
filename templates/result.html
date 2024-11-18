@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Deteksi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .result-container {
+            margin-top: 20px;
+        }
+        .result-image {
+            max-height: 400px;
+            width: auto;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+        }
+        .video-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container result-container">
+        <h2 class="text-center">Hasil Deteksi : </h2>
+        {% if detected %}
+            <div class="alert alert-success" role="alert">
+                Deteksi berhasil!
+            </div>
+            <div class="text-center"> 
+                {% if image_path %}
+                    <img src="{{ url_for('static', filename=image_path) }}" alt="Deteksi Gambar" class="img-fluid result-image">
+                {% elif video_path %}
+                    <div class="video-container">
+                        <video controls class="img-fluid">
+                            <source src="{{ url_for('static', filename=video_path) }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="alert alert-danger" role="alert">
+                Tidak ada objek yang terdeteksi.
+            </div>
+        {% endif %}
+        <div class="text-center mt-4">
+            
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary mt-3 back-button">Kembali ke Halaman Utama</a>
+
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-1">
+    <div class="card">
+        <div class="card-header bg-light text-dark">
+            <h2 class="mb-0">Daftar Kehadiran</h2>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <form action="/clear_logs" method="POST" onsubmit="return confirm('Anda yakin ingin menghapus semua log kehadiran?');">
+                    <button type="submit" class="btn btn-danger">Hapus Semua Log Kehadiran</button>
+                </form>
+                <form class="form-inline" id="searchForm">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Cari..." aria-label="Search" id="searchInput">
+                </form>
+            </div>
+
+            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                <table class="table table-bordered table-hover" id="logTable">
+                    <thead class="sticky-header">
+                        <tr>
+                            <th>No.</th>
+                            <th>Waktu</th>
+                            <th>Nama</th>
+                            <th>Kategori</th>
+                            <th>Bukti Gambar</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ log['timestamp'] }}</td>
+                            <td>{{ log['person_name'] }}</td>
+                            <td>{{ log['category'] }}</td>
+                            <td>
+                                {% if log['file_path'] %}
+                                <img src="{{ url_for('static', filename=log['file_path']) }}" alt="Image" style="max-width: 100px; max-height: 100px;" class="img-thumbnail">
+                                {% else %}
+                                Tidak ada gambar
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if log['file_path'] %}
+                                <button type="button" class="btn btn-primary btn-sm icon-button" data-toggle="modal" data-target="#previewModal{{ loop.index }}">Preview</button>
+                                {% endif %}
+                                <button type="button" class="btn btn-danger btn-sm icon-button" data-toggle="modal" data-target="#deleteModal{{ loop.index }}">Delete</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Enhanced Pagination Controls -->
+            <nav aria-label="Page navigation" style="margin-top: 30px;">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" id="prevPage">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo; Previous Page</span>
+                        </a>
+                    </li>
+                    <li class="page-item" id="nextPage">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">Next Page &raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+{% for log in logs %}
+{% if log['file_path'] %}
+<div class="modal fade" id="previewModal{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel{{ loop.index }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewModalLabel{{ loop.index }}">Preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="{{ url_for('static', filename=log['file_path']) }}" alt="Image" style="max-width: 100%; max-height: 300px;" class="img-fluid mb-3">
+                <p><strong>Waktu:</strong> {{ log['timestamp'] }}</p>
+                <p><strong>Nama:</strong> {{ log['person_name'] }}</p>
+                <p><strong>Kategori:</strong> {{ log['category'] }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="modal fade" id="deleteModal{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel{{ loop.index }}" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 300px; position: fixed; top: 10%; left: 50%; transform: translateX(-50%);">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel{{ loop.index }}">Konfirmasi Hapus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Yakin ingin menghapus log ini?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <form action="{{ url_for('delete_log') }}" method="POST" style="display:inline;">
+                    <input type="hidden" name="log_id" value="{{ log['id'] }}">
+                    <button type="submit" class="btn btn-danger">Hapus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const rowsPerPage = 10;
+    const rows = document.querySelectorAll('#logTable tbody tr');
+    const totalRows = rows.length;
+    let currentPage = 1;
+
+    function displayRows(page) {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        rows.forEach((row, index) => {
+            if (index >= start && index < end) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    function updatePagination() {
+        document.getElementById('prevPage').classList.toggle('disabled', currentPage === 1);
+        document.getElementById('nextPage').classList.toggle('disabled', currentPage === Math.ceil(totalRows / rowsPerPage));
+    }
+
+    document.getElementById('prevPage').addEventListener('click', function (event) {
+        event.preventDefault();
+        if (currentPage > 1) {
+            currentPage--;
+            displayRows(currentPage);
+            updatePagination();
+        }
+    });
+
+    document.getElementById('nextPage').addEventListener('click', function (event) {
+        event.preventDefault();
+        if (currentPage < Math.ceil(totalRows / rowsPerPage)) {
+            currentPage++;
+            displayRows(currentPage);
+            updatePagination();
+        }
+    });
+
+    displayRows(currentPage);
+    updatePagination();
+
+    document.getElementById('searchInput').addEventListener('input', function(event) {
+        let input = event.target.value.toLowerCase();
+        rows.forEach(row => {
+            let timestamp = row.cells[1].textContent.toLowerCase();
+            let name = row.cells[2].textContent.toLowerCase();
+            let category = row.cells[3].textContent.toLowerCase();
+            
+            // Cek apakah input cocok dengan timestamp, name, atau category
+            if (timestamp.includes(input) || name.includes(input) || category.includes(input)) {
+                row.style.display = ''; 
+            } else {
+                row.style.display = 'none'; 
+            }
+        });
+    });
+
+    document.getElementById('resetButton').addEventListener('click', function() {
+        rows.forEach(row => {
+            row.style.display = ''; 
+        });
+        document.getElementById('searchInput').value = ''; 
+        currentPage = 1; 
+        displayRows(currentPage);
+        updatePagination();
+    });
+});
+</script>
+
+<style>
+.table-responsive {
+    position: relative;
+}
+.sticky-header {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa; 
+    color: #ffffff; 
+    z-index: 10; 
+}
+.table thead th {
+    background-color: #5789bb;
+    z-index: 1000;
+}
+
+.pagination .page-link {
+    color: #495057;
+}
+
+.pagination .page-link:hover {
+    background-color: #5789bb;
+    color: white;
+}
+</style>
+{% endblock %}
