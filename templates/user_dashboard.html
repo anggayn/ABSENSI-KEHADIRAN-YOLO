@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -114,7 +115,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             z-index: 99;
         }
@@ -122,6 +123,35 @@
         .navbar.closed {
             left: 60px;
             width: calc(100% - 60px);
+        }
+
+        .navbar-logo {
+            max-height: 60px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #576ebb;
+        }
+
+        .profile-info .fa-user-circle {
+            font-size: 26px;
+        }
+
+        .username {
+            font-size: 12px;
+            /* Adjust the font size as needed */
+            font-weight: 500;
+            color: #000000;
+            /* Ensure the color matches your design */
         }
 
         .main-content {
@@ -143,11 +173,12 @@
             background: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .table-container h2 {
             background-color: #f0f8ff;
-            color: #5789bb;
+            color: #0275d8;
             font-size: 24px;
             font-weight: bold;
             text-align: center;
@@ -158,7 +189,7 @@
         }
 
         .table-responsive {
-            position: relative;
+            overflow-x: auto;;
         }
 
         .sticky-header {
@@ -169,18 +200,36 @@
         }
 
         .table thead th {
-            background-color: #5789bb;
+            background-color: #0275d8;
             color: white;
             z-index: 1000;
+            border-bottom: 2px solid white;
+            /* Hanya untuk pembatas antar-header */
+            box-shadow: none;
         }
-        
+
         .pagination .page-link {
-            color: #5789bb;
+            color: white;
+            background-color: #0275d8;
+            /* Warna biru */
+            border-color: #0275d8;
+            /* Warna biru */
+        }
+
+        .pagination .page-link:hover {
+            background-color: #025aa5;
+            /* Warna biru lebih gelap saat hover */
+            border-color: #025aa5;
+            /* Warna biru lebih gelap saat hover */
         }
 
         .pagination .page-item.disabled .page-link {
             color: #6c757d;
+            /* Warna abu-abu untuk item disabled */
+            background-color: #f8f9fa;
+            border-color: #f8f9fa;
         }
+
 
         .btn-primary {
             background-color: #0275d8;
@@ -211,12 +260,13 @@
         .search-container input {
             max-width: 250px;
         }
-        .sidebar .nav-links li.logout:hover {
-    background-color: #ff4d4d; /* Warna merah */
-}
 
+        .sidebar .nav-links li.logout:hover {
+            background-color: #dc3545;
+        }
     </style>
 </head>
+
 <body>
     <div class="sidebar">
         <div class="logo-details">
@@ -226,17 +276,17 @@
             <div>
                 <li class="active">
                     <a href="{{ url_for('user_dashboard') }}">
-                        <i class="fas fa-home"></i> 
+                        <i class="fas fa-home"></i>
                         <span class="link_name">Dashboard</span>
                     </a>
                 </li>
                 <li>
                     <a href="upload_user.html">
-                        <i class="fas fa-upload"></i> 
+                        <i class="fas fa-upload"></i>
                         <span class="link_name">Upload</span>
                     </a>
                 </li>
-            
+
             </div>
             <li class="logout">
                 <a href="{{ url_for('logout') }}">
@@ -244,8 +294,8 @@
                     <span class="link_name">Logout</span>
                 </a>
             </li>
-            
-            
+
+
         </ul>
     </div>
 
@@ -254,8 +304,14 @@
             <i class="ri-user-follow-line"></i>
             Absensi Kehadiran
         </div>
+        <div class="profile">
+            <!-- <img src="/static/images/Logomark_Original.png" alt="Logo" class="navbar-logo"> -->
+            <div class="profile-info">
+                <i class="fas fa-user-circle"></i>
+                <div class="username" id="username">Nama Pengguna</div>
+            </div>
+        </div>
     </nav>
-
     <section class="main-content">
         <div class="table-container">
             <h2 class="text-center mb-3">Log Absensi Kehadiran</h2>
@@ -285,14 +341,16 @@
                             <td>{{ log['category'] }}</td>
                             <td>
                                 {% if log['file_path'] %}
-                                <img src="{{ url_for('static', filename=log['file_path']) }}" alt="Image" style="max-width: 100px; max-height: 100px;" class="img-thumbnail">
+                                <img src="{{ url_for('static', filename=log['file_path']) }}" alt="Image"
+                                    style="max-width: 100px; max-height: 100px;" class="img-thumbnail">
                                 {% else %}
                                 Tidak ada gambar
                                 {% endif %}
                             </td>
                             <td>
                                 {% if log['file_path'] %}
-                                <button type="button" class="btn btn-primary btn-sm icon-button" data-bs-toggle="modal" data-bs-target="#previewModal{{ loop.index }}">Preview</button>
+                                <button type="button" class="btn btn-primary btn-sm icon-button" data-bs-toggle="modal"
+                                    data-bs-target="#previewModal{{ loop.index }}">Preview</button>
                                 {% endif %}
                             </td>
                         </tr>
@@ -305,12 +363,12 @@
                 <ul class="pagination justify-content-center">
                     <li class="page-item" id="prevPage">
                         <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo; Previous</span>
+                            <span aria-hidden="true">&laquo; PreviousPage</span>
                         </a>
                     </li>
-                    <li class="page-item" id="nextPage">
+                    <li class="page-item mx-4" id="nextPage">
                         <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">Next &raquo;</span>
+                            <span aria-hidden="true">NextPage &raquo;</span>
                         </a>
                     </li>
                 </ul>
@@ -329,7 +387,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <img src="{{ url_for('static', filename=log['file_path']) }}" alt="Preview" style="max-width: 100%; max-height: 300px;">
+                    <img src="{{ url_for('static', filename=log['file_path']) }}" alt="Preview"
+                        style="max-width: 100%; max-height: 300px;">
                     <p><strong>Waktu:</strong> {{ log['timestamp'] }}</p>
                     <p><strong>Nama:</strong> {{ log['person_name'] }}</p>
                     <p><strong>Kategori:</strong> {{ log['category'] }}</p>
@@ -354,67 +413,79 @@
         });
 
         document.addEventListener('DOMContentLoaded', function () {
-    const rowsPerPage = 10;
-    const rows = document.querySelectorAll('#logTable tbody tr');
-    const totalRows = rows.length;
-    let currentPage = 1;
+            const rowsPerPage = 10;
+            const rows = document.querySelectorAll('#logTable tbody tr');
+            const totalRows = rows.length;
+            let currentPage = 1;
 
-    function displayRows(page) {
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        rows.forEach((row, index) => {
-            row.style.display = (index >= start && index < end) ? '' : 'none';
-        });
-    }
+            function displayRows(page) {
+                const start = (page - 1) * rowsPerPage;
+                const end = start + rowsPerPage;
+                rows.forEach((row, index) => {
+                    row.style.display = (index >= start && index < end) ? '' : 'none';
+                });
+            }
 
-    function updatePagination() {
-        document.getElementById('prevPage').classList.toggle('disabled', currentPage === 1);
-        document.getElementById('nextPage').classList.toggle('disabled', currentPage === Math.ceil(totalRows / rowsPerPage));
-    }
+            function updatePagination() {
+                document.getElementById('prevPage').classList.toggle('disabled', currentPage === 1);
+                document.getElementById('nextPage').classList.toggle('disabled', currentPage === Math.ceil(totalRows / rowsPerPage));
+            }
 
-    // Fungsi untuk mencari data
-    function searchRows() {
-        let input = document.getElementById('searchInput').value.toLowerCase();
-        rows.forEach(row => {
-            let timestamp = row.cells[1].textContent.toLowerCase();
-            let name = row.cells[2].textContent.toLowerCase();
-            let category = row.cells[3].textContent.toLowerCase();
+            // Fungsi untuk mencari data
+            function searchRows() {
+                let input = document.getElementById('searchInput').value.toLowerCase();
+                rows.forEach(row => {
+                    let timestamp = row.cells[1].textContent.toLowerCase();
+                    let name = row.cells[2].textContent.toLowerCase();
+                    let category = row.cells[3].textContent.toLowerCase();
 
-            row.style.display = (timestamp.includes(input) || name.includes(input) || category.includes(input)) ? '' : 'none';
-        });
-    }
+                    row.style.display = (timestamp.includes(input) || name.includes(input) || category.includes(input)) ? '' : 'none';
+                });
+            }
 
-    // Event listener untuk pencarian langsung saat mengetik
-    document.getElementById('searchInput').addEventListener('input', searchRows);
+            // Event listener untuk pencarian langsung saat mengetik
+            document.getElementById('searchInput').addEventListener('input', searchRows);
 
-    // Event listener untuk reset tombol
-    document.getElementById('resetButton').addEventListener('click', function () {
-        document.getElementById('searchInput').value = '';
-        displayRows(currentPage);
-    });
+            // Event listener untuk reset tombol
+            document.getElementById('resetButton').addEventListener('click', function () {
+                document.getElementById('searchInput').value = '';
+                displayRows(currentPage);
+            });
 
-    displayRows(currentPage);
-    updatePagination();
-
-    document.getElementById('prevPage').addEventListener('click', function (event) {
-        event.preventDefault();
-        if (currentPage > 1) {
-            currentPage--;
             displayRows(currentPage);
             updatePagination();
-        }
-    });
 
-    document.getElementById('nextPage').addEventListener('click', function (event) {
-        event.preventDefault();
-        if (currentPage < Math.ceil(totalRows / rowsPerPage)) {
-            currentPage++;
-            displayRows(currentPage);
-            updatePagination();
+            document.getElementById('prevPage').addEventListener('click', function (event) {
+                event.preventDefault();
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayRows(currentPage);
+                    updatePagination();
+                }
+            });
+
+            document.getElementById('nextPage').addEventListener('click', function (event) {
+                event.preventDefault();
+                if (currentPage < Math.ceil(totalRows / rowsPerPage)) {
+                    currentPage++;
+                    displayRows(currentPage);
+                    updatePagination();
+                }
+            });
+        });
+        function getCookie(name) {
+            let match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+            if (match) return match[2];
         }
-    });
-});
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const username = getCookie('username');
+            if (username) {
+                document.getElementById('username').textContent = username;
+            }
+        });
 
     </script>
 </body>
+
 </html>

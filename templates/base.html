@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Absensi Kehadiran{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
             padding: 20px;
@@ -132,6 +134,26 @@
             z-index: 0;
         }
 
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            margin-right: 20px;
+        }
+
+        .profile-section i {
+            font-size: 26px;
+            color: #5789bb;
+        }
+
+        .profile-section .username {
+            font-size: 12px;
+            color: #000000;
+            font-weight: 500;
+            text-align: center;
+        }
+
         .sidebar-header {
             display: flex;
             justify-content: flex-end;
@@ -151,7 +173,7 @@
 
         .logout-section {
             position: absolute;
-            bottom: 20px;   
+            bottom: 20px;
             width: 100%;
             padding: 0 15px;
         }
@@ -169,15 +191,71 @@
             background-color: #dc3545;
             border-radius: 5px;
         }
+
+        .custom-dropdown {
+            min-width: 350px;
+            /* Keep this value for better visibility */
+        }
+
+        .dropdown-header {
+            font-weight: bold;
+        }
+
+        .form-select {
+            border-radius: 0.25rem;
+            height: 38px;
+            /* Adjust height for better alignment */
+            font-size: 14px;
+            padding: 5px 3px;
+            /* Padding for comfort */
+            margin-bottom: 0;
+            /* Remove bottom margin */
+        }
+
+        .btn-custom-pdf {
+            background-color: #1a1199;
+            color: white;
+            border-radius: 0.25rem;
+        }
+
+        .btn-custom-pdf:hover {
+            background-color: #2386c8;
+        }
+
+        .btn-custom-excel {
+            background-color: #31a54c;
+            color: white;
+            border-radius: 0.25rem;
+        }
+
+        .btn-custom-excel:hover {
+            background-color: #58c570;
+        }
+
+        .btn-danger {
+            background-color: #da3445;
+            /* Bootstrap's danger color */
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            /* Darker shade on hover */
+        }
     </style>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <span>YOLO Absensi Kehadiran</span>
-                <img src="/static/images/Logomark_Original.png" alt="Logo" style="max-height:100px;">
+                <!-- <img src="/static/images/Logomark_Original.png" alt="Logo" style="max-height:100px;"> -->
             </a>
+            <div class="profile-section">
+                <i class="fas fa-user-circle"></i>
+                <div class="username" id="username">Nama Pengguna</div>
+            </div>
         </div>
     </nav>
 
@@ -188,10 +266,13 @@
             </button>
         </div>
         <ul>
-            <li><a href="{{ url_for('admin_dashboard') }}" class="text-white"><i class="fas fa-home"></i> <span class="menu-text">Dashboard</span></a></li>
-            <li><a href="/predict" class="text-white"><i class="fas fa-upload"></i> <span class="menu-text">Upload Gambar/Video</span></a></li>
-            <li><a href="/dataset" class="text-white"><i class="fas fa-database"></i> <span class="menu-text">Dataset</span></a></li>
-            <li><a href="/stream" class="text-white"><i class="fas fa-video"></i> <span class="menu-text">CCTV</span></a></li>
+            <li><a href="{{ url_for('admin_dashboard') }}" class="text-white"><i class="fas fa-home"></i> <span
+                        class="menu-text">Dashboard</span></a></li>
+            <!-- <li><a href="/predict" class="text-white"><i class="fas fa-upload"></i> <span class="menu-text">Upload Gambar/Video</span></a></li> -->
+            <li><a href="/dataset" class="text-white"><i class="fas fa-database"></i> <span
+                        class="menu-text">Dataset</span></a></li>
+            <li><a href="/stream" class="text-white"><i class="fas fa-video"></i> <span
+                        class="menu-text">CCTV</span></a></li>
         </ul>
         <div class="logout-section">
             <a href="/logout" class="text-white">
@@ -215,6 +296,19 @@
             sidebar.classList.toggle('collapsed');
             content.classList.toggle('collapsed');
         }
+
+        function getCookie(name) {
+            const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+            return match ? match[2] : null;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = getCookie('username');
+            if (username) {
+                document.getElementById('username').textContent = username;
+            }
+        });
     </script>
 </body>
+
 </html>

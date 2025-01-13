@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Upload File{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        body {
+            padding: 20px;
+            margin-top: 70px; /* To avoid overlap with navbar */
+        }
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 220px;
+            background-color: #5789bb;
+            transition: width 0.3s ease;
+            overflow: hidden;
+            z-index: 1000;
+        }
+        .sidebar.collapsed {
+            width: 60px;
+        }
+        .sidebar ul {
+            padding: 0;
+            list-style-type: none;
+            margin-top: 20px;
+        }
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+        .sidebar ul li a {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .sidebar ul li a:hover {
+            background-color: #007bff;
+            border-radius: 5px;
+        }
+        .sidebar ul li a i {
+            width: 30px;
+            text-align: center;
+        }
+        .menu-text {
+            margin-left: 10px;
+            transition: opacity 0.3s ease, margin 0.3s ease;
+        }
+        .sidebar.collapsed .menu-text {
+            opacity: 0;
+            margin-left: -10px;
+        }
+        .content {
+            margin-left: 240px;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+        .collapsed + .content {
+            margin-left: 80px;
+        }
+        .navbar {
+            height: 70px;
+            margin-bottom: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background-color: #dcdcdc !important;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-toggler {
+            border: none;
+            outline: none;
+        }
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-grow: 1;
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(to right, #0072ff, #00c6ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+        .navbar-brand img {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            max-height: 60px;
+        }
+        .navbar-brand span {
+            margin-left: 150px;
+        }
+        .navbar::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 4px;
+            background: linear-gradient(to right, #007bff, #00c6ff);
+            z-index: 0;
+        }
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            margin-right: 20px;
+        }
+        .profile-section i {
+            font-size: 25px;
+            color: #5789bb;
+        }
+        .profile-section .username {
+            font-size: 12px;
+            color: #000000;
+            font-weight: 500;
+            text-align: center;
+        }
+        .sidebar-header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+        }
+        .sidebar-header button {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+        .sidebar-header button img {
+            max-height: 30px;
+        }
+        .upload-card, .tools-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border: 1px solid #007bff;
+        }
+        .upload-card .form-group {
+            margin-bottom: 20px;
+        }
+        .upload-card input[type="file"] {
+            height: 55px; 
+            padding: 10px;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            background-color: #e9ecef;
+            transition: border-color 0.3s ease;
+        }
+        .upload-card input[type="file"]:focus {
+            border-color: #0056b3;
+            background-color: #ffffff;
+        }
+        .upload-card button {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+        .upload-card button:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .back-button {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: white;
+        }
+        .back-button:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+        .logout-section {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            padding: 0 15px;
+        }
+        .logout-section a {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .logout-section a:hover {
+            background-color: #dc3545;
+            border-radius: 5px;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        body {
+            background: #f0f2f5;
+            padding: 20px;
+        }
+        .file-explorer {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            max-width: 1200px; /* Set a max width for the explorer */
+            margin: 0 auto; /* Center the explorer */
+        }
+        .toolbar {
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .toolbar button {
+            padding: 6px 12px;
+            border: none;
+            background: transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #555;
+        }
+        .toolbar button:hover {
+            background: #e9ecef;
+        }
+        .file-grid {
+            max-height: 400px; 
+            overflow-y: auto;  
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            gap: 15px; 
+            padding: 20px;
+            border: 1px solid #ccc; 
+        }
+        .file-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+        .file-grid::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 4px;
+        }
+        .file-grid::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+        }
+        .folder-link {
+            text-decoration: none;
+            color: inherit;
+        }
+        .file-item {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #eee;
+        }
+        .file-item:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .folder-icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+        .folder-name {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 5px;
+            word-break: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+        }
+        .folder-details {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .search-bar {
+            flex-grow: 1;
+            position: relative;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 8px 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            outline: none;
+        }
+        .search-bar input:focus {
+            border-color: #4285f4;
+        }
+        @media (max-width: 768px) {
+            .file-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }   
+        #deleteAllBtn {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        /* Hover effect for the delete button */
+        #deleteAllBtn:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+        /* Apply red color permanently on click */
+        #deleteAllBtn.clicked {
+            background-color: #dc3545;
+            color: white;
+        }
+        h4 {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <span>YOLO Absensi Kehadiran</span>
+            </a>
+            <div class="profile-section">
+                <i class="fas fa-user-circle"></i>
+                <div class="username" id="username">Nama Pengguna</div>
+            </div>            
+        </div>
+    </nav>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <button class="navbar-toggler" type="button" onclick="toggleSidebar()">
+                <img src="/static/images/menu (1).png" alt="Toggle" style="max-height: 22px;">
+            </button>
+        </div>
+        <ul>
+            <li><a href="{{ url_for('admin_dashboard') }}" class="text-white"><i class="fas fa-home"></i> <span class="menu-text">Dashboard</span></a></li>
+            <li><a href="/add_user_page" class="text-white"><i class="fas fa-user"></i> <span
+                class="menu-text">Daftar akun user</span></a></li>
+            <li><a href="/dataset" class="text-white"><i class="fas fa-database"></i> <span class="menu-text">Dataset</span></a></li>
+            <li><a href="/stream" class="text-white"><i class="fas fa-video"></i> <span class="menu-text">CCTV</span></a></li>
+        </ul>
+        <div class="logout-section">
+            <a href="/logout" class="text-white">
+                <i class="fas fa-sign-out-alt"></i>
+                <span class="menu-text">Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="content" id="content">
+        <div class="container">
+            <h2 class="mt-4 text-black">Tambah Akun User</h2>
+            <div class="card mt-3 upload-card">
+                <div class="card-body">
+                    <form id="addUserForm" method="POST" onsubmit="return handleAddUser(event)">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="whatsapp">WhatsApp</label>
+                            <input type="text" id="whatsapp" name="whatsapp" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required class="form-control">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success">Tambah User</button>
+                    </form>
+                    
+                </div>
+            </div>
+
+            <h3 class="mt-4 text-black">Daftar Akun User</h3>
+            <table class="table mt-3">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>No WhatsApp</th>
+                        <th>Password</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="userTable">
+                    <!-- User accounts will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editUserForm">
+                        <div class="form-group">
+                            <label for="editUsername">Username</label>
+                            <input type="text" id="editUsername" name="username" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="editWhatsApp">WhatsApp</label>
+                            <input type="text" id="editWhatsApp" name="whatsapp" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="editPassword">Password</label>
+                            <input type="password" id="editPassword" name="password" required class="form-control">
+                        </div>
+                        <input type="hidden" id="editUserId" name="id">
+                        <button type="submit" class="btn btn-success">Update User</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+ // Mendapatkan nilai cookie 'username'
+ const username = getCookie("username");
+    
+    // Menampilkan nama pengguna di profil
+    if (username) {
+        document.getElementById('username').textContent = username;
+    }
+
+    // Fungsi untuk mendapatkan nilai dari cookie berdasarkan nama
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+            
+            fetch('/get_users')
+                .then(response => response.json())
+                .then(data => {
+                    const userTable = document.getElementById('userTable');
+                    data.forEach(user => {
+                        const newRow = document.createElement('tr');
+                        newRow.innerHTML = `
+                            <td>${user.username}</td>
+                            <td>${user.whatsapp}</td>
+                            <td>${user.password}</td>  
+                            <td class="action-buttons">
+                                <button class="btn btn-warning btn-sm" onclick="editUser(this)">Edit</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id}, this)">Hapus</button>
+                            </td>
+                        `;
+                        userTable.appendChild(newRow);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        
+        function handleAddUser(event) {
+        event.preventDefault(); // Mencegah pengiriman form default
+
+        // Ambil data dari form
+        const form = document.getElementById('addUserForm');
+        const formData = new FormData(form);
+
+        // Kirim data menggunakan fetch
+        fetch('/add_user', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                // Jika berhasil, reload halaman
+                alert('User berhasil ditambahkan');
+                window.location.reload();
+            } else {
+                // Jika gagal, tampilkan pesan error
+                response.json().then(data => {
+                    alert(`Gagal menambahkan user: ${data.message}`);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat menambahkan user');
+        });
+
+        return false; // Menghentikan pengiriman form default
+    }
+
+        
+
+        // Function to Edit User
+        function editUser(button) {
+    const row = button.closest('tr');
+    const username = row.cells[0].innerText; // Username
+    const whatsapp = row.cells[1].innerText; // WhatsApp
+    const password = row.cells[2].innerText; // Password
+    const id = row.getAttribute('data-id'); // Gunakan data-id di elemen <tr>
+
+    if (!id) {
+        alert('ID pengguna tidak ditemukan');
+        return;
+    }
+
+    document.getElementById('editUsername').value = username;
+    document.getElementById('editWhatsApp').value = whatsapp;
+    document.getElementById('editPassword').value = password;
+    document.getElementById('editUserId').value = id;
+
+    $('#editUserModal').modal('show');
+}
+
+
+// Handle form submission for editing user
+document.getElementById('editUserForm').addEventListener('submit', function(e) {
+    e.preventDefault();  // Prevent default form submission
+
+    const id = document.getElementById('editUserId').value;
+    const username = document.getElementById('editUsername').value;
+    const whatsapp = document.getElementById('editWhatsApp').value;
+    const password = document.getElementById('editPassword').value;
+
+    console.log("Data yang dikirim:", { username, whatsapp, password });
+
+    // Send a PUT request to update user
+    fetch(`/edit_user/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, whatsapp, password })
+    })
+    .then(response => {
+        console.log('Response dari server:', response);  // Log response
+        if (response.ok) {
+            // Update the table row with new data
+            const row = document.querySelector(`#userTable tr[data-id="${id}"]`);
+            row.cells[0].innerText = username;
+            row.cells[1].innerText = whatsapp;
+            row.cells[2].innerText = password;
+
+            // Hide the modal
+            $('#editUserModal').modal('hide');
+        } else {
+            alert('Failed to update user');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+        // Function to Delete User
+        function deleteUser(id, button) {
+            fetch(`/delete_user/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    const row = button.closest('tr');
+                    row.remove(); // Remove the row from the table
+                } else {
+                    alert('Failed to delete user');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

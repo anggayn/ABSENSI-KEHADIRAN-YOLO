@@ -7,8 +7,30 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='loginregister.css') }}">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
+  <style>
+    .swal-popup-custom {
+      width: 400px; 
+      height: auto; 
+      font-size: 14px;  
+      padding: 20px;  
+    }
+
+    .swal-popup-custom .swal2-title {
+      font-size: 18px; 
+    }
+
+    .swal-popup-custom .swal2-text {
+      font-size: 14px; 
+    }
+
+    .swal-popup-custom .swal2-confirm {
+      padding: 8px 16px;  
+    }
+  </style>
+  
   <div class="background">
     <div class="shape"></div>
     <div class="shape"></div>
@@ -16,62 +38,355 @@
 
   <form class="login-form" id="loginForm" action="/" method="POST">
     <h3>Login</h3>
-    <label for="username">Username</label>
-    <input type="text" name="username" placeholder="Username" id="username" required>
+    <label for="username">Nama lengkap pengguna</label>
+    <input type="text" name="username" placeholder="masukkan nama lengkap pengguna" id="username" required>
 
     <label for="password">Password</label>
     <div class="input-container">
-      <input type="password" name="password" placeholder="Password" id="password" required>
-      <i class="fas fa-eye toggle-password" onclick="togglePassword('password')"></i>
+        <input type="password" name="password" placeholder="Password" id="password" required>
+        <i class="fas fa-eye toggle-password" onclick="togglePassword('password')"></i>
+    </div>
+
+    <div class="forgot-password-link">
+        <small><a href="#" onclick="showForgotPassword()">Forgot Password?</a></small>
     </div>
 
     <button type="submit">Log In</button>
     <div class="register-link">
-      <small>Don't have an account? <a href="#" onclick="showRegister()">Register here</a></small>
+        <small>Don't have an account? <a href="#" onclick="showRegister()">Register here</a></small>
     </div>
   </form>
 
-  <form class="register-form" id="registerForm" style="display:none;" action="/register" method="POST">
+  <!-- Register Form -->
+  <form class="register-form" id="registerForm" style="display:none;" onsubmit="handleRegister(event)" method="POST">
     <h3>Register</h3>
-    
-    <label for="reg_username">Username</label>
-    <input type="text" placeholder="Choose a Username" id="reg_username" name="username" required>
-    
+    <label for="reg_username">Nama lengkap pengguna</label>
+    <input type="text" placeholder="masukkan nama lengkap pengguna" id="reg_username" name="username" required>
+
+    <label for="reg_whatsapp">WhatsApp Number</label>
+    <input type="text" placeholder="Enter WhatsApp number (e.g., +1234567890)" id="reg_whatsapp" name="whatsapp" required>
+
     <label for="reg_email">Email</label>
-    <input type="email" placeholder="Email" id="reg_email" name="email" required>
+    <input type="email" placeholder="Enter your email" id="reg_email" name="email" required>
+
 
     <label for="reg_password">Password</label>
     <div class="input-container">
-      <input type="password" placeholder="Password" id="reg_password" name="password" required>
-      <i class="fas fa-eye toggle-password" onclick="togglePassword('reg_password')"></i>
+        <input type="password" placeholder="Password" id="reg_password" name="password" required>
+        <i class="fas fa-eye toggle-password" onclick="togglePassword('reg_password')"></i>
     </div>
 
     <button type="submit">Register</button>
     <div class="register-link">
-      <small>Already have an account? <a href="#" onclick="showLogin()">Login here</a></small>
+        <small>Already have an account? <a href="#" onclick="showLogin()">Login here</a></small>
     </div>
-</form>
+  </form>
+
+  
+   <!-- Forgot Password Form -->
+   <form class="forgot-password-form" id="forgotPasswordForm" style="display:none;" onsubmit="handleForgotPassword(event)">
+    <h3>Forgot Password</h3>
+    <label for="forgot_email">Email</label>
+    <input type="email" placeholder="Enter your email" id="forgot_email" name="email" required>
+
+    <button type="submit">Send Reset Link</button>
+    <div class="register-link">
+      <small><a href="#" onclick="showLogin()">Back to Login</a></small>
+    </div>
+  </form>
+
+  <!-- New Password Form -->
+  <form class="new-password-form" id="newPasswordForm" style="display:none;" onsubmit="handleNewPassword(event)">
+    <h3>Reset Password</h3>
+    <label for="verification_code">Verification Code</label>
+    <input type="text" placeholder="Enter Verification Code" id="verification_code" name="verification_code" required>
+
+    <label for="new_password">New Password</label>
+    <div class="input-container">
+        <input type="password" placeholder="New Password" id="new_password" name="new_password" required>
+        <i class="fas fa-eye toggle-password" onclick="togglePassword('new_password')"></i>
+    </div>
+
+    <button type="submit">Reset Password</button>
+    <div class="register-link">
+      <small><a href="#" onclick="showLogin()">Back to Login</a></small>
+    </div>
+  </form>
+
+
+  <!-- JavaScript -->
   <script>
+    // Toggle between login and register forms
     function showLogin() {
       document.getElementById('loginForm').style.display = 'block';
       document.getElementById('registerForm').style.display = 'none';
+      document.getElementById('forgotPasswordForm').style.display = 'none';
+      document.getElementById('newPasswordForm').style.display = 'none';
     }
 
     function showRegister() {
       document.getElementById('loginForm').style.display = 'none';
       document.getElementById('registerForm').style.display = 'block';
+      document.getElementById('forgotPasswordForm').style.display = 'none';
     }
 
+    function showForgotPassword() {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('registerForm').style.display = 'none';
+      document.getElementById('forgotPasswordForm').style.display = 'block';
+    }
+
+    function showNewPassword() {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('forgotPasswordForm').style.display = 'none';
+    document.getElementById('newPasswordForm').style.display = 'block';
+}
+
+
+    // Toggle password visibility
     function togglePassword(inputId) {
-      const passwordInput = document.getElementById(inputId);
-      const icon = passwordInput.nextElementSibling;
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        icon.classList.replace("fa-eye", "fa-eye-slash");
-      } else {
-        passwordInput.type = "password";
-        icon.classList.replace("fa-eye-slash", "fa-eye");
-      }
+        const passwordInput = document.getElementById(inputId);
+        const icon = passwordInput.nextElementSibling;
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            icon.classList.replace("fa-eye", "fa-eye-slash");
+        } else {
+            passwordInput.type = "password";
+            icon.classList.replace("fa-eye-slash", "fa-eye");
+        }
+    }
+
+    // SweetAlert messages for login errors
+    const errorMessage = "{{ error | safe }}";
+
+    if (errorMessage) {
+        if (errorMessage === "admin_password_wrong") {
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: 'Password admin yang Anda masukkan salah. Silakan coba lagi.',
+                confirmButtonText: 'OK',
+                customClass: {
+                    popup: 'swal-popup-custom'
+                }
+            });
+        } else if (errorMessage === "user_username_wrong") {
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: 'Username tidak ditemukan. Silakan lakukan registrasi.',
+                confirmButtonText: 'Daftar Sekarang',
+                customClass: {
+                    popup: 'swal-popup-custom'
+                }
+            }).then(() => {
+                showRegister();
+            });
+        } else if (errorMessage === "user_password_wrong") {
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: 'Password salah. Silakan coba lagi.',
+                confirmButtonText: 'OK',
+                customClass: {
+                    popup: 'swal-popup-custom'
+                }
+            });
+        }
+    }
+
+    function validateRegisterForm() {
+    const email = document.getElementById('reg_email').value;
+    const whatsapp = document.getElementById('reg_whatsapp').value;
+    const password = document.getElementById('reg_password').value;
+
+    if (!validateEmail(email)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Email',
+            text: 'Please enter a valid email address.',
+            confirmButtonText: 'OK'
+        });
+        return false;
+    }
+
+    if (!/^[\+]?\d+$/.test(whatsapp)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid WhatsApp Number',
+            text: 'Please enter a valid WhatsApp number (e.g., +1234567890).',
+            confirmButtonText: 'OK'
+        });
+        return false;
+    }
+
+    const hasNumber = /\d/.test(password);
+    const hasLetter = /[a-zA-Z]/.test(password);
+
+    if (password.length < 8 || !hasNumber || !hasLetter) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Password',
+            text: 'Password must be at least 8 characters long and include both letters and numbers.',
+            confirmButtonText: 'OK'
+        });
+        return false;
+    }
+
+    return true;
+}
+
+    function handleRegister(event) {
+        event.preventDefault();
+        if (!validateRegisterForm()) {
+            return;
+        }
+
+        const form = document.getElementById('registerForm');
+        const formData = new FormData(form);
+
+        fetch('/register', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Registration Successful',
+                    text: data.message,
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    showLogin();
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Registration Failed',
+                    text: data.message,
+                    confirmButtonText: 'OK'
+                });
+            }
+        })
+        .catch(error => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An unexpected error occurred. Please try again later.',
+                confirmButtonText: 'OK'
+            });
+            console.error('Error:', error);
+        });
+    }
+    
+    function handleForgotPassword(event) {
+    event.preventDefault();
+    const email = document.getElementById('forgot_email').value;
+
+    if (!validateEmail(email)) return;
+
+    fetch('/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Reset Link Sent',
+                text: 'Please check your email for further instructions.',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                // Menampilkan form untuk input kode verifikasi dan password baru
+                showNewPassword();
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: data.message || 'Failed to send reset link.',
+                confirmButtonText: 'OK'
+            });
+        }
+    })
+    .catch(error => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An unexpected error occurred.',
+            confirmButtonText: 'OK'
+        });
+        console.error('Error:', error);
+    });
+}
+
+function handleNewPassword(event) {
+    event.preventDefault();
+    const verificationCode = document.getElementById('verification_code').value;
+    const newPassword = document.getElementById('new_password').value;
+
+    if (!validatePassword(newPassword)) return;
+
+    fetch('/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ verification_code: verificationCode, new_password: newPassword })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => {
+                throw new Error(text);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Password Reset Successful',
+                text: 'Your password has been reset successfully.',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                showLogin(); // Arahkan ke halaman login setelah berhasil reset
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: data.message || 'Failed to reset password.',
+                confirmButtonText: 'OK'
+            });
+        }
+    })
+    .catch(error => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: error.message || 'An unexpected error occurred.',
+            confirmButtonText: 'OK'
+        });
+        console.error('Error:', error);
+    });
+}
+
+
+    function validateEmail(email) {
+        return email.includes('@');
+    }
+
+    function validatePassword(password) {
+        const hasNumber = /\d/.test(password);
+        const hasLetter = /[a-zA-Z]/.test(password);
+        if (password.length < 8 || !hasNumber || !hasLetter) {
+            Swal.fire({ icon: 'error', title: 'Invalid Password', text: 'Password must be at least 8 characters long and include both letters and numbers.', confirmButtonText: 'OK' });
+            return false;
+        }
+        return true;
     }
   </script>
 </body>

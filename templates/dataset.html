@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,8 +10,10 @@
     <style>
         body {
             padding: 20px;
-            margin-top: 70px; /* To avoid overlap with navbar */
+            margin-top: 70px;
+            /* To avoid overlap with navbar */
         }
+
         .sidebar {
             height: 100vh;
             position: fixed;
@@ -22,17 +25,21 @@
             overflow: hidden;
             z-index: 1000;
         }
+
         .sidebar.collapsed {
             width: 60px;
         }
+
         .sidebar ul {
             padding: 0;
             list-style-type: none;
             margin-top: 20px;
         }
+
         .sidebar ul li {
             margin: 10px 0;
         }
+
         .sidebar ul li a {
             display: flex;
             align-items: center;
@@ -41,30 +48,37 @@
             text-decoration: none;
             transition: background-color 0.3s ease;
         }
+
         .sidebar ul li a:hover {
             background-color: #007bff;
             border-radius: 5px;
         }
+
         .sidebar ul li a i {
             width: 30px;
             text-align: center;
         }
+
         .menu-text {
             margin-left: 10px;
             transition: opacity 0.3s ease, margin 0.3s ease;
         }
+
         .sidebar.collapsed .menu-text {
             opacity: 0;
             margin-left: -10px;
         }
+
         .content {
             margin-left: 240px;
             padding: 20px;
             transition: margin-left 0.3s ease;
         }
-        .collapsed + .content {
+
+        .collapsed+.content {
             margin-left: 80px;
         }
+
         .navbar {
             height: 70px;
             margin-bottom: 20px;
@@ -76,10 +90,12 @@
             background-color: #dcdcdc !important;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .navbar-toggler {
             border: none;
             outline: none;
         }
+
         .navbar-brand {
             display: flex;
             align-items: center;
@@ -94,6 +110,7 @@
             -webkit-text-fill-color: transparent;
             text-align: center;
         }
+
         .navbar-brand img {
             position: absolute;
             right: 0;
@@ -101,9 +118,11 @@
             transform: translateY(-50%);
             max-height: 60px;
         }
+
         .navbar-brand span {
             margin-left: 150px;
         }
+
         .navbar::before {
             content: '';
             position: absolute;
@@ -114,20 +133,44 @@
             background: linear-gradient(to right, #007bff, #00c6ff);
             z-index: 0;
         }
+
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            margin-right: 20px;
+        }
+
+        .profile-section i {
+            font-size: 25px;
+            color: #5789bb;
+        }
+
+        .profile-section .username {
+            font-size: 12px;
+            color: #000000;
+            font-weight: 500;
+            text-align: center;
+        }
+
         .sidebar-header {
             display: flex;
             justify-content: flex-end;
             padding: 10px;
         }
+
         .sidebar-header button {
             background-color: transparent;
             border: none;
             outline: none;
             cursor: pointer;
         }
+
         .sidebar-header button img {
             max-height: 30px;
         }
+
         .upload-card {
             background-color: #f8f9fa;
             border-radius: 10px;
@@ -135,45 +178,54 @@
             padding: 20px;
             border: 1px solid #007bff;
         }
+
         .upload-card .form-group {
             margin-bottom: 20px;
         }
+
         .upload-card input[type="file"] {
-            height: 55px; 
+            height: 55px;
             padding: 10px;
             border: 2px solid #007bff;
             border-radius: 5px;
             background-color: #e9ecef;
             transition: border-color 0.3s ease;
         }
+
         .upload-card input[type="file"]:focus {
             border-color: #0056b3;
             background-color: #ffffff;
         }
+
         .upload-card button {
             background-color: #007bff;
             border-color: #007bff;
             color: white;
         }
+
         .upload-card button:hover {
             background-color: #0056b3;
             border-color: #0056b3;
         }
+
         .back-button {
             background-color: #6c757d;
             border-color: #6c757d;
             color: white;
         }
+
         .back-button:hover {
             background-color: #5a6268;
             border-color: #545b62;
         }
+
         .logout-section {
             position: absolute;
             bottom: 20px;
             width: 100%;
             padding: 0 15px;
         }
+
         .logout-section a {
             display: flex;
             align-items: center;
@@ -182,10 +234,12 @@
             text-decoration: none;
             transition: background-color 0.3s ease;
         }
+
         .logout-section a:hover {
             background-color: #dc3545;
             border-radius: 5px;
         }
+
         * {
             margin: 0;
             padding: 0;
@@ -203,8 +257,10 @@
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             overflow: hidden;
-            max-width: 1200px; /* Set a max width for the explorer */
-            margin: 0 auto; /* Center the explorer */
+            max-width: 1200px;
+            /* Set a max width for the explorer */
+            margin: 0 auto;
+            /* Center the explorer */
         }
 
         .toolbar {
@@ -230,12 +286,33 @@
         }
 
         .file-grid {
+            max-height: 400px;
+            /* Tinggi maksimum area scroll */
+            overflow-y: auto;
+            /* Aktifkan scroll secara vertikal */
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            /* Grid responsif */
             gap: 15px;
+            /* Jarak antar elemen */
             padding: 20px;
-            justify-items: center; /* Center items in the grid */
+            border: 1px solid #ccc;
+            /* Opsional: Tambahkan border untuk melihat area */
         }
+
+        .file-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .file-grid::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 4px;
+        }
+
+        .file-grid::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+        }
+
 
         .folder-link {
             text-decoration: none;
@@ -301,7 +378,8 @@
             .file-grid {
                 grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
-        }   
+        }
+
         #deleteAllBtn {
             transition: background-color 0.3s ease, color 0.3s ease;
         }
@@ -317,16 +395,106 @@
             background-color: #dc3545;
             color: white;
         }
-        
+
+        .content {
+            margin-left: 240px;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .upload-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border: 1px solid #007bff;
+        }
+
+        .tools-section {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .tool-button {
+            margin: 0 5px;
+            padding: 12px 50px;
+            border-radius: 5px;
+            color: white;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+
+        .tool-button a {
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+
+        .btn-roboflow {
+            background-color: #3b82f6;
+        }
+
+        .btn-roboflow:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-colab {
+            background-color: #1bd6bd;
+        }
+
+        .btn-colab:hover {
+            background-color: #18bba5;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .col-md-6 {
+            flex: 0 0 50%;
+            padding: 40px;
+        }
+
+        h4,
+        h5 {
+            margin-bottom: 20px;
+        }
+
+        .numbered-list {
+            padding-left: 20px;
+        }
+
+        .numbered-list li {
+            margin-bottom: 5px;
+        }
+
+        .box {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 40px;
+            background-color: #f9f9f9;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
     </style>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <span>YOLO Absensi Kehadiran</span>
-                <img src="/static/images/Logomark_Original.png" alt="Logo" style="max-height:100px;">
             </a>
+            <div class="profile-section">
+                <i class="fas fa-user-circle"></i>
+                <div class="username" id="username">Nama Pengguna</div>
+            </div>
         </div>
     </nav>
 
@@ -337,10 +505,13 @@
             </button>
         </div>
         <ul>
-            <li><a href="{{ url_for('admin_dashboard') }}" class="text-white"><i class="fas fa-home"></i> <span class="menu-text">Dashboard</span></a></li>
-            <li><a href="/predict" class="text-white"><i class="fas fa-upload"></i> <span class="menu-text">Upload Gambar/Video</span></a></li>
-            <li><a href="/dataset" class="text-white"><i class="fas fa-database"></i> <span class="menu-text">Dataset</span></a></li>
-            <li><a href="/stream" class="text-white"><i class="fas fa-video"></i> <span class="menu-text">CCTV</span></a></li>
+            <li><a href="{{ url_for('admin_dashboard') }}" class="text-white"><i class="fas fa-home"></i> <span
+                        class="menu-text">Dashboard</span></a></li>
+            <!-- <li><a href="/predict" class="text-white"><i class="fas fa-upload"></i> <span class="menu-text">Upload Gambar/Video</span></a></li> -->
+            <li><a href="/dataset" class="text-white"><i class="fas fa-database"></i> <span
+                        class="menu-text">Dataset</span></a></li>
+            <li><a href="/stream" class="text-white"><i class="fas fa-video"></i> <span
+                        class="menu-text">CCTV</span></a></li>
         </ul>
         <div class="logout-section">
             <a href="/logout" class="text-white">
@@ -357,11 +528,11 @@
                 </div>
                 <button id="deleteAllBtn" onclick="deleteAllFolders()" class="btn btn-danger">
                     <i class="fas fa-trash-alt"></i> Delete All
-                </button>                 
+                </button>
             </div>
 
             <div class="file-grid">
-                {% for folder in folders %} 
+                {% for folder in folders %}
                 <div class="file-item">
                     <a href="{{ url_for('view_folder', folder_name=folder) }}" class="folder-link">
                         <i class="fas fa-folder folder-icon"></i>
@@ -369,98 +540,205 @@
                         <p class="folder-details">Klik untuk melihat</p>
                     </a>
                     <div class="d-inline-flex align-items-center">
-                        <button class="btn btn-sm btn-primary mr-2" style="padding: 1px 3px; font-size: 10px;" onclick="downloadFolder('{{ folder }}')">
+                        <button class="btn btn-sm btn-primary mr-2" style="padding: 1px 3px; font-size: 10px;"
+                            onclick="downloadFolder('{{ folder }}')">
                             <i class="fas fa-download"></i> Download
                         </button>
-                        <button class="btn btn-sm btn-danger" style="padding: 1px 3px; font-size: 10px;" onclick="deleteFolder('{{ folder }}')">
+                        <button class="btn btn-sm btn-danger" style="padding: 1px 3px; font-size: 10px;"
+                            onclick="deleteFolder('{{ folder }}')">
                             <i class="fas fa-trash-alt"></i> Hapus
                         </button>
-                    </div>                                      
-                    
+                    </div>
                 </div>
                 {% endfor %}
             </div>
         </div>
-    </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('collapsed');
-        }
+        <!-- New section for Roboflow and Google Colab buttons -->
+        <div class="tools-section">
+            <h4 class="text-center">Tools</h4>
+            <div class="d-flex justify-content-center">
+                <div class="tool-button btn-roboflow">
+                    <a href="https://roboflow.com/" target="_blank">
+                        <img src="/static/images/logoroboflow.png" alt="Roboflow Icon"
+                            style="width: 30px; height: 30px;"><br>
+                        Create Dataset
+                    </a>
+                </div>
+                <div class="tool-button btn-colab">
+                    <a href="https://colab.research.google.com/github/ultralytics/ultralytics/blob/main/examples/tutorial.ipynb"
+                        target="_blank">
+                        <img src="/static/images/logocolab.png" alt="Colab Icon" style="width: 40px; height: 40px;"><br>
+                        Train Dataset
+                    </a>
+                </div>
+            </div>
+            <p class="text-center mt-3" style="font-size: 14px; color: #666;">
+                Gunakan tombol button di atas untuk membuat dan melatih kumpulan data Anda dengan mudah.
+            </p>
 
-        function downloadFolder(folderName) {
-    window.location.href = `/download_folder/${folderName}`;
-}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box">
+                        <h5 class="text-center mt-3">Cara Membuat Dataset</h5>
+                        <p>Berikut adalah langkah-langkah untuk membuat dataset:</p>
+                        <ol class="numbered-list">
+                            <li>klik tombol <strong>Create dataset diatas</strong>.</li>
+                            <li>Lakukan klik tombol <strong>Sign In</strong> untuk melakukan login.</li>
+                            <li>Klik tombol <strong>New Project</strong>.</li>
+                            <li>Isi inputan <strong>Project Name</strong> dan <strong>Annotation Group</strong> sesuai
+                                dengan project Anda.</li>
+                            <li>Pilih <strong>Project Type</strong>: Object Detection -> klik tombol <strong>Create
+                                    Public Project</strong>.</li>
+                            <li>Pilih <strong>Upload Data</strong>: lakukan upload foto-foto staff dan mahasiswa -> klik
+                                tombol <strong>Save and Continue</strong>.</li>
+                            <li>Pilih <strong>Manual Labeling</strong> -> klik tombol <strong>Start Manual
+                                    Labeling</strong> -> assign to Myself.</li>
+                            <li>Pilih <strong>Annotating</strong> -> klik tombol <strong>Start Annotating</strong>.</li>
+                            <li>Pilih <strong>Bounding Box Tool</strong> -> pilih area wajah dan lakukan labelling ->
+                                isi Annotation Editor sesuai dengan nama orangnya -> <strong>Save Enter</strong>.</li>
+                            <li>Kembali ke halaman project pilih <strong>Annotate</strong> -> klik tombol <strong>Add
+                                    Image to Dataset</strong> -> pilih <strong>Method What's Train, Valid,
+                                    Test?</strong> -> pilih <strong>Split Images Between Train/Valid/Test</strong> ->
+                                klik tombol <strong>Add Images</strong>.</li>
+                            <li>Pilih dataset - pilih tombol <strong>Generate Version</strong>.</li>
+                            <li>Pilih <strong>Preprocessing</strong> -> isi <strong>Resize</strong> menjadi 1024 ->
+                                <strong>Continue</strong>.</li>
+                            <li><strong>Augmentation</strong> -> <strong>Continue</strong>.</li>
+                            <li>Klik tombol <strong>Create</strong>.</li>
+                            <li>Klik tombol <strong>Download Dataset</strong> -> format YOLOv8 -> pilih <strong>Show
+                                    Download Code</strong> -> <strong>Continue</strong>.</li>
+                            <li>Copy model library.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="box">
+                        <h5 class="text-center mt-3">Tutorial Train Dataset</h5>
+                        <p>Berikut adalah langkah-langkah untuk melatih dataset Anda:</p>
+                        <ol>
+                            <ol class="numbered-list">
+                                <li>klik tombol <strong>Train Dataset</strong>.</li>
+                                <li>jalankan atau run:
+                                    <pre>%pip install ultralytics<br>import ultralytics<br>ultralytics.checks()</pre>
+                                </li>
+                                <li>tambahkan code di bawah:
+                                    <pre># Download COCO val<br>import torch<br>torch.hub.download_url_to_file('https://ultralytics.com/assets/coco2017val.zip', 'tmp.zip')  # download (780M - 5000 images)<br>!unzip -q tmp.zip -d datasets && rm tmp.zip  # unzip<br>-> paste model library dataset yang udah di download -> jalankan atau run</pre>
+                                </li>
+                                <li>buka folder dan pilih file <strong>data.yaml</strong>.</li>
+                                <li>ubah isi dalam data dengan salt path sesuai dengan file contoh:
+                                    <pre>data: /content/coba-1/data.yaml<br>test: /content/coba-1/test.yaml<br>train: /content/coba-1/train.yaml<br>val: /content/coba-1/val.yaml<br>-> jangan lupa save</pre>
+                                </li>
+                                <li>ubah isi kode:
+                                    <pre># Validate YOLO11n on COCO8 val<br>!yolo val model=yolo11n.pt data=coco8.yaml</pre>
+                                    menjadi seperti di bawah ini:
+                                    <pre># Validate YOLO11n on COCO8 val<br>!yolo val model=yolov8n.pt data=salin salt path data<br>-> lalu jalankan atau run -> nanti kalau sudah akan ada file YoloV8 dan YoloV11</pre>
+                                </li>
+                                <li>ubah isi kode:
+                                    <pre># Train YOLO11n on COCO8 for 3 epochs<br>!yolo train model=yolo11n.pt data=coco8.yaml epochs=3 imgsz=640</pre>
+                                    menjadi seperti di bawah ini:
+                                    <pre># Train YOLO11n on COCO8 for 3 epochs<br>!yolo train model=yolov8n.pt data=salin salt path data epochs=semakin besar epochs semakin akurat misal 200 imgsz=1024<br>-> lalu jalankan atau run tunggu sampai selesai epochs</pre>
+                                </li>
+                                <li>buka folder <strong>runs</strong> -> <strong>detect</strong> ->
+                                    <strong>train</strong> -> <strong>weights</strong> -> pilih <strong>best.pt</strong>
+                                    -> download <strong>best.pt</strong>.</li>
+                            </ol>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
-function deleteFolder(folderName) {
-    const confirmDelete = confirm(`Are you sure you want to delete the folder "${folderName}"? This action cannot be undone.`);
-    if (confirmDelete) {
-        fetch(`/delete_folder/${folderName}`, { method: 'DELETE' })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script>
+            function toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                sidebar.classList.toggle('collapsed');
             }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-                location.reload(); 
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => {
-            alert(`Error: ${error}`);
-        });
-    }
-}
-function filterFolders() {
-        const searchQuery = document.querySelector('.search-bar input').value.toLowerCase(); 
-        const folderItems = document.querySelectorAll('.file-item'); 
-        
-        folderItems.forEach(item => {
-            const folderName = item.querySelector('.folder-name').textContent.toLowerCase(); 
-            if (folderName.includes(searchQuery)) {
-                item.style.display = 'block'; 
-            } else {
-                item.style.display = 'none'; 
-            }
-        });
-    }
 
-    // Tambahkan event listener pada input pencarian
-    document.querySelector('.search-bar input').addEventListener('input', filterFolders);
-
-    function deleteAllFolders() {
-    const confirmDelete = confirm("Are you sure you want to delete all folders? This action cannot be undone.");
-    if (confirmDelete) {
-        fetch('/delete_all_folders', { method: 'DELETE' })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            function downloadFolder(folderName) {
+                window.location.href = `/download_folder/${folderName}`;
             }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                alert(data.message);
-                location.reload(); // Reload the page to update the folder list
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => {
-            alert(`Error: ${error}`);
-        });
-    }
-}
 
-</script>
+            function deleteFolder(folderName) {
+                const confirmDelete = confirm(`Are you sure you want to delete the folder "${folderName}"? This action cannot be undone.`);
+                if (confirmDelete) {
+                    fetch(`/delete_folder/${folderName}`, { method: 'DELETE' })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                alert(data.message);
+                                location.reload();
+                            } else {
+                                alert(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            alert(`Error: ${error}`);
+                        });
+                }
+            }
+
+            function deleteAllFolders() {
+                const confirmDelete = confirm("Are you sure you want to delete all folders? This action cannot be undone.");
+                if (confirmDelete) {
+                    fetch('/delete_all_folders', { method: 'DELETE' })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                alert(data.message);
+                                location.reload(); // Reload the page to update the folder list
+                            } else {
+                                alert(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            alert(`Error: ${error}`);
+                        });
+                }
+            }
+
+            function getCookie(name) {
+                const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+                return match ? match[2] : null;
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const username = getCookie('username');
+                if (username) {
+                    document.getElementById('username').textContent = username;
+                }
+            });
+            document.querySelector('.search-bar input').addEventListener('input', function () {
+                const query = this.value.toLowerCase(); // Ambil input pengguna dalam huruf kecil
+                const folders = document.querySelectorAll('.file-item'); // Semua elemen folder
+
+                folders.forEach(folder => {
+                    const folderName = folder.querySelector('.folder-name').textContent.toLowerCase(); // Nama folder
+                    if (folderName.includes(query)) {
+                        folder.style.display = 'block'; // Tampilkan folder jika cocok
+                    } else {
+                        folder.style.display = 'none'; // Sembunyikan folder jika tidak cocok
+                    }
+                });
+            });
+
+        </script>
 </body>
+
 </html>

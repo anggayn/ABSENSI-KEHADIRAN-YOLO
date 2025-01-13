@@ -1,98 +1,126 @@
-/* loginregister.css */
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    background-color: #201f2c;
-    font-family: 'Poppins', sans-serif;
-  }
-  
-  .background {
-    width: 430px;
-    height: 520px;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    left: 50%;
-    top: 50%;
-  }
-  
-  .background .shape {
-    height: 200px;
-    width: 200px;
-    position: absolute;
-    border-radius: 50%;
-  }
-  
-  .shape:first-child {
-    background: linear-gradient(#1845ad, #23a2f6);
-    left: -80px;
-    top: -80px;
-  }
-  
-  .shape:last-child {
-    background: linear-gradient(to right, #ff512f, #f09819);
-    right: -30px;
-    bottom: -80px;
-  }
-  
-  form {
-    height: 575px;
-    width: 500px;
-    background-color: rgba(255, 255, 255, 0.13);
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
-    padding: 50px 35px;
-  }
-  
-  form * {
-    color: #ffffff;
-    letter-spacing: 0.5px;
-    outline: none;
-    border: none;
-  }
-  
-  form h3 {
-    font-size: 32px;
-    font-weight: 500;
-    line-height: 42px;
-    text-align: center;
-  }
-  
-  label {
-    display: block;
-    margin-top: 30px;
-    font-size: 16px;
-    font-weight: 500;
-  }
-  
+  /* loginregister.css */
+  * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background-color: #1f37be;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .background {
+      width: 430px;
+      height: 520px;
+      position: absolute;
+      transform: translate(-50%, -50%);
+      left: 50%;
+      top: 50%;
+    }
+    
+    .background .shape {
+      height: 200px;
+      width: 200px;
+      position: absolute;
+      border-radius: 50%;
+    }
+    
+    .shape:first-child {
+      background: linear-gradient(#1845ad, #23a2f6);
+      left: -80px;
+      top: -80px;
+    }
+    
+    .shape:last-child {
+      background: linear-gradient(to right, #ff512f, #f09819);
+      right: -30px;
+      bottom: -80px;
+    }
+    
+    form {
+      height: 575px;
+      width: 500px;
+      background-color: rgba(255, 255, 255, 0.13);
+      position: absolute;
+      transform: translate(-50%, -50%);
+      top: 50%;
+      left: 50%;
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+      padding: 50px 35px;
+    }
+    
+    form * {
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      outline: none;
+      border: none;
+    }
+    
+    form h3 {
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 42px;
+      text-align: center;
+    }
+    
+  /* General Styles for Both Forms */
   input {
     display: block;
-    height: 50px;
-    width: 100%;
+    width: calc(100% - 20px); /* Ensure input width does not exceed border */
     background-color: rgba(255, 255, 255, 0.07);
     border-radius: 3px;
-    padding: 0 10px;
-    margin-top: 8px;
+    padding: 0 15px;
     font-size: 14px;
     font-weight: 300;
+    margin: 0 auto; /* Center the inputs */
   }
-  
-  ::placeholder {
-    color: #e5e5e5;
+
+  /* Login Form Styles */
+  .login-form {
+    text-align: center; /* Center content in login form */
   }
-  
+
+  .login-form label {
+    display: block; /* Align labels as block elements */
+    width: calc(100% - 20px); /* Use full width minus padding for alignment */
+    text-align: left; /* Align text to the left */
+    margin-top: 35px; /* Margin above the label */
+    margin-bottom: 5px; /* Space below the label */
+    padding-left: 10px; /* Add padding to shift label to the right */
+  }
+
+  .login-form input {
+    height: 45px; /* Adjusted height for login */
+    margin-top: 5px; /* Reduced margin for login */
+  }
+
+  /* Register Form Styles */
+  .register-form {
+    text-align: center; /* Center content in register form */
+  }
+
+  .register-form label {
+    display: block; /* Align labels as block elements */
+    width: calc(100% - 20px); /* Use full width minus padding for alignment */
+    text-align: left; /* Align text to the left */
+    margin-top: 15px; /* Margin above the label */
+    margin-bottom: 5px; /* Space below the label */
+    padding-left: 10px; /* Add padding to shift label to the right */
+  }
+
+  .register-form input {
+    height: 40px; /* Adjusted height for register */
+    margin-top: 5px; /* Reduced margin for register */
+  }
+
+  /* Button Styles */
   button {
-    margin-top: 50px;
-    width: 100%;
+    margin-top: 20px; /* Space above button */
+    width: calc(100% - 20px); /* Ensure button width does not exceed border */
     background-color: #ffffff;
     color: #080710;
     padding: 15px 0;
@@ -100,59 +128,381 @@
     font-weight: 600;
     border-radius: 5px;
     cursor: pointer;
+    display: block; /* Center the button */
+    margin-left: auto;
+    margin-right: auto; /* Center button */
   }
-  
-  .social {
-    margin-top: 30px;
-    display: flex;
+
+  /* Input container for password visibility toggle */
+  .input-container {
+    margin-top: 10px; /* Adjust as necessary for spacing */
   }
-  
-  .social div {
-    width: 150px;
-    border-radius: 3px;
-    padding: 5px 10px 10px 5px;
-    background-color: rgba(255, 255, 255, 0.27);
-    color: #eaf0fb;
-    text-align: center;
+    ::placeholder {
+      color: #e5e5e5;
+    }
+    
+    /* button {
+      margin-top: 50px;
+      width: 100%;
+      background-color: #ffffff;
+      color: #080710;
+      padding: 15px 0;
+      font-size: 18px;
+      font-weight: 600;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    */
+    .social {
+      margin-top: 30px;
+      display: flex;
+    }
+    
+    .social div {
+      width: 150px;
+      border-radius: 3px;
+      padding: 5px 10px 10px 5px;
+      background-color: rgba(255, 255, 255, 0.27);
+      color: #eaf0fb;
+      text-align: center;
+    }
+    
+    .social div:hover {
+      background-color: rgba(255, 255, 255, 0.47);
+    }
+    
+    .social .fb {
+      margin-left: 25px;
+    }
+    
+    .social i {
+      margin-right: 4px;
+    }
+    
+    .register-link {
+      margin-top: 20px;
+      text-align: center;
+      color: #ffffff;
+    }
+    
+    .register-link a {
+      color: #ffb01e;
+      text-decoration: none;
+    }
+
+
+  .input-container {
+    position: relative;
   }
-  
-  .social div:hover {
-    background-color: rgba(255, 255, 255, 0.47);
+
+  .input-container input {
+    padding-right: 40px; /* Adds space for the icon */
   }
-  
-  .social .fb {
-    margin-left: 25px;
+
+  .toggle-password {
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #e5e5e5;
   }
-  
-  .social i {
-    margin-right: 4px;
-  }
-  
-  .register-link {
-    margin-top: 20px;
-    text-align: center;
-    color: #ffffff;
-  }
-  
-  .register-link a {
-    color: #ffb01e;
-    text-decoration: none;
-  }
+  /* loginregister.css */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #1f37be;
+  font-family: 'Poppins', sans-serif;
+}
+
+.background {
+  width: 430px;
+  height: 520px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+}
+
+.background .shape {
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  border-radius: 50%;
+}
+
+.shape:first-child {
+  background: linear-gradient(#1845ad, #23a2f6);
+  left: -80px;
+  top: -80px;
+}
+
+.shape:last-child {
+  background: linear-gradient(to right, #ff512f, #f09819);
+  right: -30px;
+  bottom: -80px;
+}
+
+form {
+  height: 575px;
+  width: 500px;
+  background-color: rgba(255, 255, 255, 0.13);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+  padding: 50px 35px;
+}
+
+form * {
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
+
+form h3 {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 42px;
+  text-align: center;
+}
+
+/* General Styles for Both Forms */
+input {
+display: block;
+width: calc(100% - 20px); /* Ensure input width does not exceed border */
+background-color: rgba(255, 255, 255, 0.07);
+border-radius: 3px;
+padding: 0 15px;
+font-size: 14px;
+font-weight: 300;
+margin: 0 auto; /* Center the inputs */
+}
+
+/* Login Form Styles */
+.login-form {
+text-align: center; /* Center content in login form */
+}
+
+.login-form label {
+display: block; /* Align labels as block elements */
+width: calc(100% - 20px); /* Use full width minus padding for alignment */
+text-align: left; /* Align text to the left */
+margin-top: 35px; /* Margin above the label */
+margin-bottom: 5px; /* Space below the label */
+padding-left: 10px; /* Add padding to shift label to the right */
+}
+
+.login-form input {
+height: 45px; /* Adjusted height for login */
+margin-top: 5px; /* Reduced margin for login */
+}
+
+/* Register Form Styles */
+.register-form {
+text-align: center; /* Center content in register form */
+}
+
+.register-form label {
+display: block; /* Align labels as block elements */
+width: calc(100% - 20px); /* Use full width minus padding for alignment */
+text-align: left; /* Align text to the left */
+margin-top: 15px; /* Margin above the label */
+margin-bottom: 5px; /* Space below the label */
+padding-left: 10px; /* Add padding to shift label to the right */
+}
+
+.register-form input {
+height: 40px; /* Adjusted height for register */
+margin-top: 5px; /* Reduced margin for register */
+}
+
+/* Button Styles */
+button {
+margin-top: 20px; /* Space above button */
+width: calc(100% - 20px); /* Ensure button width does not exceed border */
+background-color: #ffffff;
+color: #080710;
+padding: 15px 0;
+font-size: 18px;
+font-weight: 600;
+border-radius: 5px;
+cursor: pointer;
+display: block; /* Center the button */
+margin-left: auto;
+margin-right: auto; /* Center button */
+}
+
+/* Input container for password visibility toggle */
+.input-container {
+margin-top: 5px; /* Adjust as necessary for spacing */
+}
+::placeholder {
+  color: #e5e5e5;
+}
+
+/* button {
+  margin-top: 50px;
+  width: 100%;
+  background-color: #ffffff;
+  color: #080710;
+  padding: 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+}
+ */
+.social {
+  margin-top: 30px;
+  display: flex;
+}
+
+.social div {
+  width: 150px;
+  border-radius: 3px;
+  padding: 5px 10px 10px 5px;
+  background-color: rgba(255, 255, 255, 0.27);
+  color: #eaf0fb;
+  text-align: center;
+}
+
+.social div:hover {
+  background-color: rgba(255, 255, 255, 0.47);
+}
+
+.social .fb {
+  margin-left: 25px;
+}
+
+.social i {
+  margin-right: 4px;
+}
+
+.register-link {
+  margin-top: 20px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.register-link a {
+  color: #ffb01e;
+  text-decoration: none;
+}
 
 
 .input-container {
-  position: relative;
+position: relative;
 }
 
 .input-container input {
-  padding-right: 40px; /* Adds space for the icon */
+padding-right: 40px; /* Adds space for the icon */
 }
 
 .toggle-password {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #e5e5e5;
+position: absolute;
+right: 30px;
+top: 50%;
+transform: translateY(-50%);
+cursor: pointer;
+color: #e5e5e5;
+}
+.forgot-password-link {
+  display: block; /* Make it a block element */
+  text-align: left; /* Align text to the left */
+  margin-top: 10px; /* Space above the text */
+  padding-left: 10px; /* Align with input padding */
+  color: #ffffff; /* Set text color */
+  text-decoration: none; /* Remove underline */
+}
+
+
+/* Responsive Adjustments */
+/* Forgot Password Form Styles */
+.forgot-password-form label {
+    margin-top: 20px; /* Add more space above the label */
+    margin-bottom: 5px; /* Space below the label */
+}
+
+.forgot-password-form input {
+    height: 60px; /* Increased height for better accessibility */
+    font-size: 18px; /* Increased font size for easier readability */
+    margin-top: 10px; /* Space between label and input */
+    margin-bottom: 20px; /* Space below the input */
+}
+
+/* Button Styles within Forgot Password Form */
+.forgot-password-form button {
+    margin-top: 20px; /* Additional space above the button */
+    width: calc(100% - 20px); /* Ensure button width does not exceed border */
+    background-color: #ffffff;
+    color: #080710;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .forgot-password-form input {
+        height: 60px; /* Consistent height for smaller screens */
+        font-size: 18px; /* Increase font size for better readability */
+    }
+
+    .forgot-password-form button {
+        margin-top: 30px; /* Increase space above button on mobile */
+    }
+}
+@media (max-width: 600px) {
+  form {
+      width: 90%; /* Adjust width for smaller screens */
+      padding: 30px 20px; /* Adjust padding */
+  }}
+/* Specific styles for reset password form */
+.new-password-form input {
+  height: 50px; /* Tinggi input */
+  font-size: 16px; /* Ukuran font yang lebih besar */
+  padding: 0 15px; /* Padding untuk memberikan ruang di dalam input */
+  margin-bottom: 15px; /* Spasi di bawah input */
+  border-radius: 5px; /* Membulatkan sudut */
+}
+
+/* Adjust label spacing for better alignment */
+.new-password-form label {
+  margin-top: 15px; /* Spasi di atas label */
+  margin-bottom: 5px; /* Spasi di bawah label */
+  padding-left: 10px; /* Geser label ke kanan untuk keselarasan */
+  font-size: 14px; /* Ukuran font label */
+}
+
+/* Adjust button for better alignment */
+.new-password-form button {
+  margin-top: 20px; /* Spasi atas */
+  width: 100%; /* Lebar penuh */
+  padding: 15px; /* Padding di dalam tombol */
+  font-size: 18px; /* Ukuran font tombol */
+  border-radius: 5px; /* Membulatkan tombol */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .new-password-form input {
+      height: 55px; /* Tinggi input untuk layar kecil */
+      font-size: 18px; /* Ukuran font lebih besar */
+  }
+
+  .new-password-form label {
+      font-size: 16px; /* Ukuran font label untuk layar kecil */
+  }
 }
